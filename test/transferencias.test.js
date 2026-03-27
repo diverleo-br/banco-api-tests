@@ -2,6 +2,7 @@ const request = require("supertest")
 const {expect } = require ('chai')
 require('dotenv').config()
 const { obterToken } = require('../helpers/autenticacao.js')
+const postTransferencias = require('../fixtures/postTransferencias.json')
 
 
 describe ('Transferências', () =>{
@@ -22,17 +23,13 @@ describe ('Transferências', () =>{
         //             'senha': '1234'
         //         })
         //     const token = respostaLogin.body.token
+            const bodyTransferencias = {...postTransferencias}
 
             const resposta = await request (process.env.BASE_URL)
             .post('/transferencias')
             .set('Content-Type', 'application/json')
             .set('Authorization', 'Bearer ' + token)
-            .send({
-                contaOrigem: 2,
-                contaDestino: 3,
-                valor: 11,
-                token: ""
-                })
+            .send(bodyTransferencias)
             expect(resposta.status).to.equal(201)
 
             console.log(resposta.body)
@@ -47,17 +44,15 @@ describe ('Transferências', () =>{
             //         'senha': '1234'
             //     })
             // const token = respostaLogin.body.token
+            const bodyTransferencias = {...postTransferencias}
+            //mudando somente o valor do posttransferencias 
+            bodyTransferencias.valor = 7
 
-            const resposta = await request ('http://localhost:3000')
+            const resposta = await request (process.env.BASE_URL)
             .post('/transferencias')
             .set('Content-Type', 'application/json')
             .set('Authorization', 'Bearer ' + token)
-            .send({
-                contaOrigem: 2,
-                contaDestino: 3,
-                valor: 7,
-                token: ""
-                })
+            .send(bodyTransferencias)
             expect(resposta.status).to.equal(422)
 
             console.log(resposta.body)
