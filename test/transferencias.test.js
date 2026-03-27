@@ -6,9 +6,13 @@ const { obterToken } = require('../helpers/autenticacao.js')
 
 describe ('Transferências', () =>{
     describe('POST /transferencias', () => {
-        it('Deve retornar sucesso 201 quando o valor da transferencia for igual ou acima de R$ 10,00', async () => {
+        let token
+        beforeEach (async () => {
+            token = await obterToken('leo','1234')
+
+        })
+        it ('Deve retornar sucesso 201 quando o valor da transferencia for igual ou acima de R$ 10,00', async () => {
             //apos mudanca no cod usamos o comando para chamar o helpers (funcao passando user e senha)
-            const token = await obterToken('leo','1234')
         //cod antes da melhoria de helpers
         //     const respostaLogin = await request (process.env.BASE_URL)
         //         .post('/login')
@@ -35,7 +39,6 @@ describe ('Transferências', () =>{
         })
 
         it ('Deve retornar falha 422 quando o valor da transferencia for abaixo de R$ 10,00', async () => {
-            const token = await obterToken('leo','1234')
             //  const respostaLogin = await request ('http://localhost:3000')
             //     .post('/login')
             //     .set('Content-Type', 'application/json')
